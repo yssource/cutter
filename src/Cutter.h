@@ -524,6 +524,8 @@ public:
     void setDebugPlugin(QString plugin);
     bool currentlyDebugging = false;
     bool currentlyEmulating = false;
+    int currentlyAttachedToPID = -1;
+    QString currentlyOpenFile;
 
     RVA getOffsetJump(RVA addr);
     QString getDecompiledCode(RVA addr);
