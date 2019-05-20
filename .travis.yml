@@ -65,6 +65,12 @@ addons:
   homebrew:
     brewfile: scripts/Brewfile
 
+  apt:
+    packages:
+    - libgl1-mesa-dev
+    - libglu1-mesa-dev
+    - libegl1-mesa-dev
+
 install:
   - scripts/fetch_deps.sh
   - source cutter-deps/env.sh
