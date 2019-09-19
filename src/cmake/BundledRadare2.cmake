@@ -36,3 +36,5 @@ target_link_libraries(Radare2 INTERFACE
         r_hash r_bin r_lang r_io r_anal r_parse r_bp r_egg r_reg
         r_search r_syscall r_socket r_fs r_magic r_crypto)
 target_include_directories(Radare2 INTERFACE "${Radare2_INCLUDE_DIRS}")
+
+install(DIRECTORY "${RADARE2_INSTALL_DIR}/" DESTINATION ".")

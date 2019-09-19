@@ -224,3 +224,4 @@ if(TARGET KF5::SyntaxHighlighting)
     target_compile_definitions(Cutter PRIVATE CUTTER_ENABLE_KSYNTAXHIGHLIGHTING)
 endif()
 
+install(TARGETS Cutter)
