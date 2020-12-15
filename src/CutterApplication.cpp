@@ -133,7 +133,7 @@ CutterApplication::CutterApplication(int &argc, char **argv, bool test) : QAppli
     setStyle(new CutterProxyStyle());
 #endif // QT_VERSION_CHECK(5, 10, 0) < QT_VERSION
 
-    if (clOptions.args.empty()) {
+    if (clOptions.args.empty() && !test) {
         // check if this is the first execution of Cutter in this computer
         // Note: the execution after the preferences been reset, will be considered as
         // first-execution
@@ -141,7 +141,7 @@ CutterApplication::CutterApplication(int &argc, char **argv, bool test) : QAppli
             mainWindow->displayWelcomeDialog();
         }
         mainWindow->displayNewFileDialog();
-    } else { // filename specified as positional argument
+    } else if (!test) { // filename specified as positional argument
         bool askOptions = clOptions.analLevel != AutomaticAnalysisLevel::Ask;
         mainWindow->openNewFile(clOptions.fileOpenOptions, askOptions);
     }
@@ -190,42 +190,6 @@ CutterApplication::CutterApplication(int &argc, char **argv, bool test) : QAppli
         Core()->setConfig("ghidra.sleighhome", sleighHome.absolutePath());
     }
 #endif
-
-    if (!test) {
-        if (args.empty()) {
-            if (analLevelSpecified) {
-                printf("%s\n",
-                       QObject::tr("Filename must be specified to start analysis automatically.").toLocal8Bit().constData());
-                std::exit(1);
-            }
-
-            // check if this is the first execution of Cutter in this computer
-            // Note: the execution after the preferences benn reset, will be considered as first-execution
-            if (Config()->isFirstExecution()) {
-                mainWindow->displayWelcomeDialog();
-            }
-            mainWindow->displayNewFileDialog();
-        } else { // filename specified as positional argument
-            InitialOptions options;
-            options.filename = args[0];
-            if (analLevelSpecified) {
-                switch (analLevel) {
-                case 0:
-                default:
-                    options.analCmd = {};
-                    break;
-                case 1:
-                    options.analCmd = { {"aaa", "Auto analysis"} };
-                    break;
-                case 2:
-                    options.analCmd = { {"aaaa", "Auto analysis (experimental)"} };
-                    break;
-                }
-            }
-            options.script = cmd_parser.value(scriptOption);
-            mainWindow->openNewFile(options, analLevelSpecified);
-        }
-    }
 }
 
 CutterApplication::~CutterApplication()
